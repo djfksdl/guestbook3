@@ -1,5 +1,7 @@
 ﻿<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-
+<%@ page import="java.util.List" %> 
+<%@ page import="com.javaex.vo.GuestVo" %>
+<% List<GuestVo> guestList = (List<GuestVo>)request.getAttribute("guestList"); %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,57 +13,38 @@
 	<form>
 		<table border="1" width="540px">
 			<tr>
-				<td>이름</td><td><input type="text" name=""></td>
-				<td>비밀번호</td><td><input type="password" name=""></td>
+				<td>이름</td><td><input type="text" name="name"></td>
+				<td>비밀번호</td><td><input type="password" name="pw"></td>
 			</tr>
 			<tr>
-				<td colspan="4"><textarea cols="72" rows="5"></textarea></td>
+				<td colspan="4"><textarea cols="72" rows="5" name="content"></textarea></td>
 			</tr>
 			<tr>
-				<td colspan="4"><button type="">등록</button></td>
+				<td colspan="4"><button type="submit">등록</button></td>
+				<input type="text" name="action" value="insert">
 			</tr>
 		</table>
 	</form>
 	<br>
 
 	
-	<table border="1" width="540px">
-		<tr>
-			<td>[1]</td>
-			<td>이효리</td>
-			<td>2022-01-01</td>
-			<td><a href="">삭제</a></td>
-		</tr>
-		<tr>
-			<td colspan="4">방문하고 갑니다.</td>
-		</tr>
-	</table>
-	<br>
+	<% for(int i = 0; i<guestList.size(); i++ ){
+	%>
 	
 	<table border="1" width="540px">
 		<tr>
-			<td>[1]</td>
-			<td>이효리</td>
-			<td>2022-01-01</td>
+			<td>[<%= guestList.get(i).getNo() %>]</td>
+			<td><%= guestList.get(i).getName() %></td>
+			<td><%=guestList.get(i).getReg_date() %></td>
 			<td><a href="">삭제</a></td>
 		</tr>
 		<tr>
-			<td colspan="4">방문하고 갑니다.</td>
+			<td colspan="4"><%=guestList.get(i).getContent() %></td>
 		</tr>
 	</table>
 	<br>
-
-	<table border="1" width="540px">
-		<tr>
-			<td>[1]</td>
-			<td>이효리</td>
-			<td>2022-01-01</td>
-			<td><a href="">삭제</a></td>
-		</tr>
-		<tr>
-			<td colspan="4">방문하고 갑니다.</td>
-		</tr>
-	</table>
-	<br>
+	<%
+	} 
+	%>
 </body>
 </html>
