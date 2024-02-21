@@ -7,11 +7,13 @@
 </head>
 <body>
 	<form>
+	<input type="text" name="no" value="<%=request.getAttribute("no")%>">
 		<table>
 			<tr>
 				<td>비밀번호</td>
-				<td><input type="password" name=""></td>
+				<td><input type="password" name="pw"></td>
 				<td><button type="submit">삭제</button></td>
+				<input type="text" name="action" value="delete" >
 			</tr>
 		</table>
 	</form>

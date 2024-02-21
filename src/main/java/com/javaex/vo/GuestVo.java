@@ -13,6 +13,13 @@ public class GuestVo {
 	public GuestVo() {
 		super();
 	}
+	
+	public GuestVo(int no, String pw) {
+		super();
+		this.no = no;
+		this.pw = pw;
+	}
+
 	public GuestVo(String name, String pw, String content) {
 		super();
 		this.name = name;

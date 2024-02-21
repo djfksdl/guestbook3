@@ -22,10 +22,10 @@ public class GuestbookController extends HttpServlet {
 
     //메소드-일반
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		System.out.println("GuestbookController.goGet()");//실행확인
+//		System.out.println("GuestbookController.goGet()");//실행확인
 		
 		String action = request.getParameter("action");
-		System.out.println(action);
+//		System.out.println(action);
 		
 		if("alform".equals(action)) { //메인화면
 			System.out.println("alform:메인화면");
@@ -36,11 +36,11 @@ public class GuestbookController extends HttpServlet {
 			//리스트 불러오기
 			List<GuestVo> guestList = guestDao.guestSelect();
 			
-			//데이터 담기
+			//데이터 담기(리스트 주소를 request에 담기)
 			request.setAttribute("guestList", guestList);
 			
 			//포워드
-			WebUtil.forward(request, response, "/addList.jsp");
+			WebUtil.forward(request, response, "/WEB-INF/addList.jsp");
 			
 		}else if("insert".equals(action)) {//등록
 			System.out.println("alform:등록");
@@ -64,6 +64,29 @@ public class GuestbookController extends HttpServlet {
 			WebUtil.redirect(request, response, "/guestbook3/gbc?action=alform");
 			
 			
+		}else if("dform".equals(action)) {
+			System.out.println("dform:삭제폼");
+			int no = Integer.parseInt(request.getParameter("no"));
+//			
+			request.setAttribute("no", no);
+
+//			//리다이렉트
+			WebUtil.forward(request, response, "/WEB-INF/deleteForm.jsp");
+		}else if("delete".equals(action) ) {
+			//받은 값을 저장
+			int no = Integer.parseInt(request.getParameter("no"));
+			String pw = request.getParameter("pw");
+			
+			//Vo로 묶기
+			GuestVo guestVo = new GuestVo(no,pw);
+			
+			//DB관련
+			GuestDao guestDao = new GuestDao();
+			
+			//Dao메소드쓰기
+			guestDao.guestDelete(guestVo);
+			
+			WebUtil.redirect(request, response, "/guestbook3/gbc?action=alform");
 		}
 	}
 
