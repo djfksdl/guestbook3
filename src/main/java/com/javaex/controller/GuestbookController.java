@@ -68,7 +68,10 @@ public class GuestbookController extends HttpServlet {
 			System.out.println("dform:삭제폼");
 			int no = Integer.parseInt(request.getParameter("no"));
 //			
+			
 			request.setAttribute("no", no);
+			
+			
 
 //			//리다이렉트
 			WebUtil.forward(request, response, "/WEB-INF/deleteForm.jsp");

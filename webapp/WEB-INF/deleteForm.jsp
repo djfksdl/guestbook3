@@ -7,7 +7,7 @@
 </head>
 <body>
 	<form>
-	<input type="text" name="no" value="<%=request.getAttribute("no")%>">
+	<input type="text" name="no" value="<%=request.getParameter("no")%>">
 		<table>
 			<tr>
 				<td>비밀번호</td>
