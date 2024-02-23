@@ -66,10 +66,9 @@ public class GuestbookController extends HttpServlet {
 			
 		}else if("dform".equals(action)) {
 			System.out.println("dform:삭제폼");
-			int no = Integer.parseInt(request.getParameter("no"));
-//			
 			
-			request.setAttribute("no", no);
+			//request에서 파라미터 받기
+			//int no = Integer.parseInt(request.getParameter("no"));
 			
 			
 
@@ -78,18 +77,37 @@ public class GuestbookController extends HttpServlet {
 		}else if("delete".equals(action) ) {
 			//받은 값을 저장
 			int no = Integer.parseInt(request.getParameter("no"));
+//			System.out.println(no);
 			String pw = request.getParameter("pw");
 			
 			//Vo로 묶기
 			GuestVo guestVo = new GuestVo(no,pw);
+			//System.out.println(guestVo);
 			
 			//DB관련
 			GuestDao guestDao = new GuestDao();
 			
-			//Dao메소드쓰기
-			guestDao.guestDelete(guestVo);
+			//비밀번호 확인 방법1: select로 불러오고 일치하면 delete메소드 쓰기
+			//Dao메소드쓰기 + 가져오기
+//			GuestVo gVo =guestDao.guestSelectOne(guestVo);//no pw
+//			System.out.println("확인완료");
+//			if(gVo != null) {//비밀번호 일치=> 삭제 메소드+리다이렉트
+//				//일치하면 지우고, 아니면 안지우는거하기(못지움)
+//				guestDao.guestDelete(gVo);
+//				WebUtil.redirect(request, response, "/guestbook3/gbc?action=alform");
+//				System.out.println("비밀번호 일치후 삭제");
+//				
+//			}else {
+//
+//				WebUtil.redirect(request, response, "/guestbook3/gbc?action=alform");
+//				System.out.println("비밀번호 일치하지않음");
+//			}
 			
+			//비밀번호 확인 방법2: delete문에where로 조건 주기
+			//Dao메소드 쓰기
+			guestDao.cleanDelete(guestVo);
 			WebUtil.redirect(request, response, "/guestbook3/gbc?action=alform");
+			
 		}
 	}
 

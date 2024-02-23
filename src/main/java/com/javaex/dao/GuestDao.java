@@ -145,14 +145,80 @@ public class GuestDao {//DB관련
 		}
 		return count;
 	}
+	//비밀번호 일치여부 확인
+	public GuestVo guestSelectOne(GuestVo guestVo) {
+		GuestVo gVo = null;
+		// 0. import java.sql.*;
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+		// 1. JDBC 드라이버 (Oracle) 로딩
+			Class.forName("com.mysql.cj.jdbc.Driver");
+	
+		// 2. Connection 얻어오기
+			String url = "jdbc:mysql://localhost:3306/guestbook_db";
+			conn = DriverManager.getConnection(url, "guestbook", "guestbook");
+			
+		// 3. SQL문 준비 / 바인딩 / 실행
+			//SQL문 준비
+			//비밀번호 일치 여부 확인
+			String query="";
+			query +=" select name ";
+			query +=" 		,no";
+			query +=" 		,password ";
+			query +=" from guestbook ";
+			query +=" where no=? ";
+			query +=" and password=? ";
+			
+			//바인딩
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, guestVo.getNo() ) ;
+			pstmt.setString(2, guestVo.getPw() ) ;
+	
+			
+			//실행
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				int no = rs.getInt("no");
+				String pw = rs.getString("password");
+				
+				gVo = new GuestVo(no, pw); 
+			}
+			
+		// 4.결과처리
+			
+		} catch (ClassNotFoundException e) {
+		System.out.println("error: 드라이버 로딩 실패 - " + e);
+		} catch (SQLException e) {
+		System.out.println("error:" + e);
+		} finally {
+		// 5. 자원정리
+		try {
+		if (rs != null) {
+		rs.close();
+		} 
+		if (pstmt != null) {
+		pstmt.close();
+		}
+		if (conn != null) {
+		conn.close();
+		}
+		} catch (SQLException e) {
+		System.out.println("error:" + e);
+		}
+		}
+		
+		return gVo;
+	}
 	
 	//삭제
-	public int guestDelete(GuestVo guestVo) {
+	public int guestDelete(GuestVo gVo) {
 		int count = -1;
 		// 0. import java.sql.*;
 		Connection conn = null;
 		PreparedStatement pstmt = null;
-		PreparedStatement pstmt2 = null;
 		ResultSet rs = null;
 		try {
 		// 1. JDBC 드라이버 (Oracle) 로딩
@@ -164,38 +230,78 @@ public class GuestDao {//DB관련
 			
 		// 3. SQL문 준비 / 바인딩 / 실행
 			//SQL문 준비
-			//비밀번호 일치 여부 확인
-			String query1="";
-			query1 +=" select name ";
-			query1 +=" from guestbook ";
-			query1 +=" where no=? ";
-			query1 +=" and password=? ";
+			String query="";
+			query +=" delete from guestbook ";
+			query +=" where no=? ";
+			query +=" and password=? ";
 			
 			//바인딩
-			pstmt = conn.prepareStatement(query1);
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, gVo.getNo() ) ;
+			pstmt.setString(2, gVo.getPw() ) ;
+
+			
+			//실행
+			count = pstmt.executeUpdate(); //select문 빼고 나머지는 executeUpdate()씀!
+			System.out.println("1건 삭제되었습니다.");
+			
+			
+		// 4.결과처리
+			
+		} catch (ClassNotFoundException e) {
+		System.out.println("error: 드라이버 로딩 실패 - " + e);
+		} catch (SQLException e) {
+		System.out.println("error:" + e);
+		} finally {
+		// 5. 자원정리
+		try {
+		if (rs != null) {
+		rs.close();
+		} 
+		if (pstmt != null) {
+		pstmt.close();
+		}
+		if (conn != null) {
+		conn.close();
+		}
+		} catch (SQLException e) {
+		System.out.println("error:" + e);
+		}
+		}
+		
+		return count;
+	}
+	//clean삭제
+	public int cleanDelete(GuestVo guestVo) {
+		int count = -1;
+		// 0. import java.sql.*;
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+		// 1. JDBC 드라이버 (Oracle) 로딩
+			Class.forName("com.mysql.cj.jdbc.Driver");
+
+		// 2. Connection 얻어오기
+			String url = "jdbc:mysql://localhost:3306/guestbook_db";
+			conn = DriverManager.getConnection(url, "guestbook", "guestbook");
+			
+		// 3. SQL문 준비 / 바인딩 / 실행
+			//SQL문 준비
+			String query="";
+			query +=" delete from guestbook ";
+			query +=" where no=? ";
+			query +=" and password=? ";
+			
+			//바인딩
+			pstmt = conn.prepareStatement(query);
 			pstmt.setInt(1, guestVo.getNo() ) ;
 			pstmt.setString(2, guestVo.getPw() ) ;
 
 			
 			//실행
-			rs = pstmt.executeQuery();
-			if(rs.next()) {//일치하는 데이터가 있다면 삭제/이동한 위치에 레코드가 있으면 true반환, 아니면 false반환
-				String query2="";
-				query2 +=" delete from guestbook ";
-				query2 +=" where no=? ";
-				query2 +=" and password=? ";
-				
-				//바인딩
-				pstmt2 = conn.prepareStatement(query2);
-				pstmt2.setInt(1, guestVo.getNo() ) ;
-				pstmt2.setString(2, guestVo.getPw() ) ;
-				
-				count = pstmt2.executeUpdate(); //select문 빼고 나머지는 executeUpdate()씀!
-				System.out.println("1건 삭제되었습니다.");
-			}else {//일치하는 데이터가 없다면
-				System.out.println("비밀번호가 다릅니다.");
-				
-			}
+			count = pstmt.executeUpdate(); //select문 빼고 나머지는 executeUpdate()씀!
+			System.out.println("1건 삭제되었습니다.");
 			
 			
 		// 4.결과처리
