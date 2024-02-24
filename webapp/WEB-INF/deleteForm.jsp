@@ -6,7 +6,7 @@
 <title>delete Form</title>
 </head>
 <body>
-	<form>
+	<form >
 	<input type="text" name="no" value="<%=request.getParameter("no")%>">
 		<table>
 			<tr>

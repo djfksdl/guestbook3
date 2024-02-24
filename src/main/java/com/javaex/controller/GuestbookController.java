@@ -72,7 +72,7 @@ public class GuestbookController extends HttpServlet {
 			
 			
 
-//			//리다이렉트
+//			//포워드
 			WebUtil.forward(request, response, "/WEB-INF/deleteForm.jsp");
 		}else if("delete".equals(action) ) {
 			//받은 값을 저장
