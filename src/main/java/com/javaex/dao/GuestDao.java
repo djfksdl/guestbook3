@@ -145,7 +145,7 @@ public class GuestDao {//DB관련
 		}
 		return count;
 	}
-	//비밀번호 일치여부 확인
+	//비밀번호 확인 폼
 	public GuestVo guestSelectOne(GuestVo guestVo) {
 		GuestVo gVo = null;
 		// 0. import java.sql.*;
