@@ -67,11 +67,8 @@ public class GuestbookController extends HttpServlet {
 		}else if("dform".equals(action)) {
 			System.out.println("dform:삭제폼");
 			
-			//request에서 파라미터 받기
-			//int no = Integer.parseInt(request.getParameter("no"));
-			
-			
 
+			
 //			//포워드
 			WebUtil.forward(request, response, "/WEB-INF/deleteForm.jsp");
 		}else if("delete".equals(action) ) {

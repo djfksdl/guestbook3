@@ -145,7 +145,7 @@ public class GuestDao {//DB관련
 		}
 		return count;
 	}
-	//비밀번호 확인 폼
+	//비밀번호 삭제-처음에 정보 가져오고,다음에 삭제하는 2개 메소드 쓰는 방법1)
 	public GuestVo guestSelectOne(GuestVo guestVo) {
 		GuestVo gVo = null;
 		// 0. import java.sql.*;
@@ -213,7 +213,7 @@ public class GuestDao {//DB관련
 		return gVo;
 	}
 	
-	//삭제
+	//비밀번호 삭제-처음에 정보 가져오고,다음에 삭제하는 2개 메소드 쓰는 방법1)
 	public int guestDelete(GuestVo gVo) {
 		int count = -1;
 		// 0. import java.sql.*;
@@ -271,7 +271,7 @@ public class GuestDao {//DB관련
 		
 		return count;
 	}
-	//clean삭제
+	//clean삭제-쿼리문에서 조건 설정해줘서 한번에 삭제
 	public int cleanDelete(GuestVo guestVo) {
 		int count = -1;
 		// 0. import java.sql.*;
